@@ -2,55 +2,29 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
 	var S string
 	fmt.Scan(&S)
 
-	Slength := len(S)
-	flag := "NO"
-
 	wordList := [4]string{"dream", "dreamer", "erase", "eraser"}
-	wordListCount := 0
 
-	for Slength > 0 {
+	for j := 0; j < 4; j++ {
 
-		searchRange := Slength - len(wordList[wordListCount])
-
-		if searchRange < 0 {
-
-			wordListCount++
-
-			if wordListCount > 3 {
-				break
-			}
-
-			continue
+		if strings.HasSuffix(S, wordList[j]) {
+			S = strings.TrimSuffix(S, wordList[j])
+			j = -1
 		}
 
-		tmp := S[searchRange:]
-
-		if tmp != wordList[wordListCount] {
-
-			wordListCount++
-			if wordListCount > 3 {
-				break
-			}
-
-			continue
+		if len(S) == 0 {
+			fmt.Println("YES")
+			break
 		}
-
-		wordListCount = 0
-
-		S = S[:searchRange]
-		Slength = len(S)
-
 	}
 
-	if Slength == 0 {
-		flag = "YES"
+	if len(S) > 0 {
+		fmt.Println("NO")
 	}
-	fmt.Println(flag)
-
 }
