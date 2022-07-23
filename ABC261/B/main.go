@@ -1,29 +1,33 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strconv"
 	"strings"
 )
+
+var sc = bufio.NewScanner(os.Stdin)
 
 func main() {
 	var N int
 	var result = map[string]int{"-": 0, "W": 0, "L": 0, "D": 0}
 
-	fmt.Scan(&N)
+	if sc.Scan() {
+		N, _ = strconv.Atoi(sc.Text())
+	}
 
 	for i := 0; i < N; i++ {
 
 		var tmp string
-		fmt.Scan(&tmp)
-		splitTmp := strings.Split(tmp, "")
+		if sc.Scan() {
+			tmp = sc.Text()
+		}
 
-		for j := range splitTmp {
-			for k := range result {
-				if splitTmp[j] == k {
-					result[k]++
-					break
-				}
-			}
+		for j := range result {
+			count := strings.Count(tmp, j)
+			result[j] += count
 		}
 	}
 
