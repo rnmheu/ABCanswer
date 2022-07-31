@@ -6,43 +6,33 @@ func main() {
 	var POINT, EDGE int
 	fmt.Scan(&POINT, &EDGE)
 
-	EDGE_LIST := make([][2]int, EDGE)
+	EDGE_LIST := make([][]bool, POINT)
 
 	for i := range EDGE_LIST {
-		var tmp [2]int
-		fmt.Scan(&tmp[0], &tmp[1])
-		EDGE_LIST[i] = tmp
+		uv := make([]bool, POINT)
+		EDGE_LIST[i] = uv
+	}
+
+	for i := 0; i < EDGE; i++ {
+		var u, v int
+		fmt.Scan(&u, &v)
+		u--
+		v--
+		EDGE_LIST[u][v] = true
+		EDGE_LIST[v][u] = true
 	}
 
 	var count int
-	for i := range EDGE_LIST {
-		for j := range EDGE_LIST {
-			if i == j {
-				continue
-			}
-			countNum := make(map[int]int)
-			countNum[EDGE_LIST[i][0]]++
-			countNum[EDGE_LIST[i][1]]++
-			countNum[EDGE_LIST[j][0]]++
-			countNum[EDGE_LIST[j][1]]++
-
-			if len(countNum) != 3 {
-				continue
-			}
-
-			for k := range EDGE_LIST {
-				if j == k || k == i {
-					continue
-				}
-
-				_, ok1 := countNum[EDGE_LIST[k][0]]
-				_, ok2 := countNum[EDGE_LIST[k][1]]
-
-				if ok1 == true && ok2 == true {
+	for i := 0; i < POINT; i++ {
+		for j := i; j < POINT; j++ {
+			for k := j; k < POINT; k++ {
+				if EDGE_LIST[i][j] == EDGE_LIST[j][k] &&
+					EDGE_LIST[j][k] == EDGE_LIST[k][i] &&
+					EDGE_LIST[k][i] == true {
 					count++
 				}
 			}
 		}
 	}
-	fmt.Println(count / 6)
+	fmt.Println(count)
 }
